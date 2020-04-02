@@ -2,7 +2,7 @@
 
 ws_client is a wrapper for the popular Web Socket module (ws), which provides an communication to get  data of nexulab's gateway. Below is our architecture based on Web Socket.
 
-![nexulab_websocket](nexulab_websocket_2.png)
+![nexulab_websocket](./pic/nexulab_websocket_2.png)
 
 # Requirements
 
@@ -37,7 +37,7 @@ After creating the new object you may want to connect to the server by using the
 ```
 wsClient.onGatewayData = this.gatewayData.bind(/* binding 'this' on your specific scope */);
 gatewayData: function (msg) {
-	// something to do
+    // something to do
 }
 wsClient.open();
 ```
@@ -73,12 +73,14 @@ In this example is how to use 'live' for button trigger
 ```
 var wsClient = new WebSocketClient('user1@nexulab.com');
 wsClient.open();
+
 // Explicit binding 'this' as something object
 wsClient.onGatewayData = this.gatewayData.bind(/*something obejct*/);
+
 // Use the received data to update something you want
 gatewayData = function(obj) {
-	if (Object.keys(obj).length != 0 && obj.constructor === Object) {
-            
+    if (Object.keys(obj).length != 0 && obj.constructor === Object) {
+        // something to do
     }
 };
 ```
