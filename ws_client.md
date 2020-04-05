@@ -68,7 +68,7 @@ Below json format is our special packet format between server and client through
 
 # Examples
 
-In this example is how to use 'live' for button trigger
+In this example shows how to use the ws_client on a live trigger that getting gateway data in a duration
 
 ```
 var wsClient = new WebSocketClient('user1@nexulab.com');
@@ -83,6 +83,7 @@ gatewayData = function(obj) {
         // something to do
     }
 };
+wsClient.live(/*a gateway name that you want to get data from*/);
 ```
 
 # TODO
