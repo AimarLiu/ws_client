@@ -1,7 +1,7 @@
 
 function WebSocketClient(webname) {
 	this.number = 0;	// Message number
-	this.autoReconnectInterval = 5*1000;	// ms
+	this.autoReconnectInterval = 15*1000;	// ms
 	this.webName = webname;
 	this.timeout;
 	this.connected = false;
@@ -115,7 +115,7 @@ WebSocketClient.prototype.onevent = function(data) {
 		// Gateway data is in the Paramters.Obj, please reference another json format structure doc of gateway data
 		// to know what the format is
 		this.onGatewayData(json.Parameters.Obj);
-	} else if (json.Type === 'Ack' && json.Status == 0) {
+	} else if (json.Type === 'Ack') {
 		this.onack(json.Parameters.Cmd, json.Status);
 	}
 }
@@ -130,13 +130,23 @@ WebSocketClient.prototype.onack = function(ackCmd, status) {
 				this.connected = true;
 			}
 			break;
+        case 'Normal_Mode':
 		case 'Live_Data':
 		case 'Current_Data':
+        // server response, tell web the gateway is exist
 		case 'Upgrade_Firmware':
 			if (status != 0) {
 				alert('can not find the gateway');
 			}
 			break;
+        // gateway response, tell web the gateway's status on the upgrade.
+        case 'FW_Upgrade':
+			if (status == 0) {
+				alert('gateway upgrade is successful');
+			} else {
+				alert('gateway upgrade is failure');
+			}
+			break
 		default:
 			break;
 	}
@@ -145,6 +155,7 @@ WebSocketClient.prototype.onGatewayData = function(data) {
 	console.debug("WebSocketClient: data", arguments);
 	// process gateway data here 
 }
+WebSocketClient.prototype.close = function() { this.instance.close(); }
 WebSocketClient.prototype.send_package = function(cmd, gwName) {
 	if (this.connected) {
 		this.package.Timestamp = (new Date()).getTime();
